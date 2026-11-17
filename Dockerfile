@@ -8,8 +8,7 @@ WORKDIR /app
 COPY pyproject.toml README.md ./
 COPY src ./src
 
-RUN python -m pip install --no-cache-dir --upgrade "pip>=26.3" \
-    && pip install --no-cache-dir . \
+RUN pip install --no-cache-dir . \
     && useradd --create-home --uid 10001 appuser \
     && chown -R appuser:appuser /app
 

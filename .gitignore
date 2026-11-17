@@ -2,8 +2,7 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
-.env*
-!.env.example
+.env
 .next/
 node_modules/
 frontend/.next/

@@ -8,13 +8,10 @@ Requires Docker Desktop with Compose. Python and Node are not required on the ho
 
 ```powershell
 Copy-Item .env.example .env
-$adminPassword = [Convert]::ToHexString([Security.Cryptography.RandomNumberGenerator]::GetBytes(32))
-$appPassword = [Convert]::ToHexString([Security.Cryptography.RandomNumberGenerator]::GetBytes(32))
-@("POSTGRES_PASSWORD=$adminPassword", "APP_DB_PASSWORD=$appPassword", "LLM_PROVIDER=demo", "LLM_BASE_URL=https://api.openai.com/v1", "LLM_API_KEY=", "LLM_MODEL=gpt-4o-mini") | Set-Content -Encoding ascii .env
 docker compose up --build
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The default `LLM_PROVIDER=demo` produces deterministic briefs without API credentials. Reports are persisted in the PostgreSQL `postgres_data` volume. The API connects as a restricted `research_app` role; the separate bootstrap database password is only used by PostgreSQL initialization. Published ports bind to loopback for local development. Stop with `Ctrl+C`; run `docker compose down` to stop and remove containers. `docker compose down -v` also deletes saved report data.
+Open [http://localhost:3000](http://localhost:3000). The default `LLM_PROVIDER=demo` produces deterministic briefs without API credentials. Reports are persisted in the PostgreSQL `postgres_data` volume. Stop with `Ctrl+C`; run `docker compose down` to stop and remove containers. `docker compose down -v` also deletes saved report data.
 
 ## Use a hosted OpenAI-compatible model
 
@@ -66,4 +63,4 @@ docs/                 Architecture notes
 - **Day 6:** request tracing, error handling, and API tests.
 - **Day 7:** end-to-end Compose demo, bug fixes, and local Git commit.
 
-The current brief is a first-week foundation, not the full autonomous research workflow. Search, document ingestion, evidence verification, and real citations are future milestones. The local stack is not hardened for public deployment; see [Security notes](docs/security.md).
+The current brief is a first-week foundation, not the full autonomous research workflow. Search, document ingestion, evidence verification, and real citations are future milestones.

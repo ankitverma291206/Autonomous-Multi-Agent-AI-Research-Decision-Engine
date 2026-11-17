@@ -87,16 +87,14 @@ async def llm_response_error_handler(_: Request, exc: LLMResponseError):
 
 @app.exception_handler(SQLAlchemyError)
 async def database_error_handler(_: Request, exc: SQLAlchemyError):
-    # Driver exceptions can include SQL parameters (including the user's query).
-    logger.error("database_operation_failed exception_type=%s", type(exc).__name__)
+    logger.exception("database_operation_failed")
     return JSONResponse(status_code=503, content={"error": {"code": "database_unavailable", "message": "Report storage is temporarily unavailable."}})
 
 
 @app.exception_handler(Exception)
 async def unexpected_error_handler(request: Request, exc: Exception):
     request_id = getattr(request.state, "request_id", "unknown")
-    # Avoid logging exception text or stack locals that may contain request data.
-    logger.error("unhandled_error request_id=%s exception_type=%s", request_id, type(exc).__name__)
+    logger.exception("unhandled_error request_id=%s", request_id, exc_info=exc)
     return JSONResponse(
         status_code=500,
         content={"error": {"code": "internal_error", "message": "An unexpected error occurred.", "request_id": request_id}},
